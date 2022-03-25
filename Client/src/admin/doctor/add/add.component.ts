@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { rejects } from 'assert';
 import { FILE, resolve } from 'dns';
-
+import * as moment from 'moment';
+export default moment;
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { DoctorService } from 'src/admin/services/doctor.service';
 
@@ -15,12 +16,23 @@ import { specialities } from 'src/utils/Doctor_Specialities';
   styleUrls: ['./add.component.sass'],
 })
 export class AddComponent implements OnInit {
+  
+  now = new Date();
+  days=30;
+  year = this.now.getFullYear();
+  month = this.now.getMonth();
+  day = this.now.getDay();
+  minDate = moment(new Date()).format('YYYY-MM-DD');
+  // maxDate=this.addDays(this.minDate, this.days);
+  // maxDate = moment(this.minDate,"YYYY-MM-DD").add(30, 'days');
+
+
   model: any = {
     docID: '',
-    fName: 'test_name',
-    lName: 'test_name',
+    fName: 'first_name',
+    lName: 'last_name',
     Doj: '',
-    emailID: 'test_name@mail.com',
+    emailID: 'name@mail.com',
     phone: '123456789',
     city: 'city',
     state: 'state',
@@ -34,7 +46,8 @@ export class AddComponent implements OnInit {
   msg_text: string = '';
   warn: boolean = false;
   success: boolean = false;
-
+  
+    
   ipfs: any;
 
   Specialities = specialities;
@@ -46,43 +59,69 @@ export class AddComponent implements OnInit {
 
   ngOnInit(): void {
     this.ipfs = this.doctorService.ipfs;
-
   }
 
   onAddDocSubmit() {
     this.show = true;
     this.msg_text = 'Adding Doctor to the Network....';
     this.warn = false;
-
+    
 
     let form = new FormData();
-    console.log("The Joining date is " + this.model.Doj);
-    form.append('fName', ""+this.model.fName);
-    form.append('lName', ""+this.model.lName);
-    form.append('Doj', ""+this.model.Doj + " 06:00");
-    form.append('emailID', ""+this.model.emailID);
-    form.append('city', ""+this.model.city);
-    form.append('state', ""+this.model.state);
-    form.append('docID', ""+this.model.docID);
-    form.append('department', ""+this.model.department);
-    form.append('image', this.model.image);
+    
+    
+    var date1=this.minDate;
 
-    this.doctorService.addDoctor(form).then((data: any) => {
-      console.log(data);
-      if (data.status == 'success') {
-        this.msg_text += '<br>User Added to the Blockchain';
-        console.log('User added Successfully');
-        this.success = true;
-        this.model = {};
-      } else {
-        this.warn = !this.warn;
-        this.msg_text =
-          'Adding Doctor Failed<br> <small class="fw-light text-danger"><b>"</b>' +
-          this.model.docID +
-          '<b>"</b></small><br>1.not a valid address or <br>2.Already have a role';
-      }
-    });
+    var date2=this.model.Doj;
+    
+    var diff =  Math.floor(( Date.parse(date2) - Date.parse(date1) ) / 86400000);
+    console.log("diff ye h"+diff);
+ 
+
+    if(Number(diff)<30)
+    {
+    
+      console.log("The Joining date is " + this.model.Doj);
+      form.append('fName', ""+this.model.fName);
+      form.append('lName', ""+this.model.lName);
+      form.append('Doj', ""+this.model.Doj + " 06:00");
+      form.append('emailID', ""+this.model.emailID);
+      form.append('city', ""+this.model.city);
+      form.append('state', ""+this.model.state);
+      form.append('docID', ""+this.model.docID);
+      form.append('department', ""+this.model.department);
+      form.append('image', this.model.image);
+
+      this.doctorService.addDoctor(form).then((data: any) => {
+        console.log(data);
+        if (data.status == 'success') {
+          this.msg_text += '<br>User Added to the Blockchain';
+          console.log('User added Successfully');
+          this.success = true;
+          this.model = {};
+        } else {
+          this.warn = !this.warn;
+          this.msg_text =
+            'Adding Doctor Failed<br> <small class="fw-light text-danger"><b>"</b>' +
+            this.model.docID +
+            '<b>"</b></small><br>1.not a valid address or <br>2.Already have a role';
+        }
+      });
+    }
+    else
+    {
+      this.msg_text = 'Joining Date must be within 30days from today....';
+    }
   }
+
+
+  // addDays(myDate:any,days:any) {
+  //   return new Date(myDate + days*24*60*60*1000);
+  //   }
+
+  // valueChanged()
+  // {}
+
 
   PreviewImage(event: any) {
     if (event.target.files && event.target.files[0]) {

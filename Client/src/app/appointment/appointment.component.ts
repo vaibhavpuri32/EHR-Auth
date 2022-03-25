@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BlockchainService } from 'src/services/blockchain.service';
 import { specialities } from '../../utils/Doctor_Specialities';
+import * as moment from 'moment';
+export default moment;
 
 @Component({
   selector: 'app-appointment',
@@ -10,11 +12,14 @@ import { specialities } from '../../utils/Doctor_Specialities';
 })
 export class AppointmentComponent implements OnInit {
 
-  public today: Date = new Date();
+  now = new Date();
+  days=30;
+  year = this.now.getFullYear();
+  month = this.now.getMonth();
+  day = this.now.getDay();
+  minDate = moment(new Date()).format('YYYY-MM-DD');
+  diff:any;
   
-  public no = 15;
-  public futureDate : Date = this.addDays(this.no);
-
 
 
   constructor(
@@ -25,7 +30,7 @@ export class AppointmentComponent implements OnInit {
   // today = Date.now();
 
   Specialities = specialities;
-
+  
   showProgress = true;
   progressWarn = false;
   progressMsg = 'Checking is Patient';
@@ -39,6 +44,8 @@ export class AppointmentComponent implements OnInit {
   patientID = ''
   DoctorsList:any
 
+  warn: boolean = false;
+
   ngOnInit(): void {    
   
     this.checkisPatient();
@@ -50,13 +57,13 @@ export class AppointmentComponent implements OnInit {
     })
   }
 
-  addDays(days : number): Date{
-    var futureDate = new Date();
-    console.log("adadsfsf" + futureDate.getDate());
-    futureDate.setDate(futureDate.getDate() + days);
-    console.log("adadsfsf"+futureDate);
-    return futureDate;
-  }
+  // addDays(days : number): Date{
+  //   var futureDate = new Date();
+  //   console.log("adadsfsf" + futureDate.getDate());
+  //   futureDate.setDate(futureDate.getDate() + days);
+  //   console.log("adadsfsf"+futureDate);
+  //   return futureDate;
+  // }
   
   checkisPatient() {
     this.blockchainServices
@@ -83,24 +90,45 @@ export class AppointmentComponent implements OnInit {
     this.progressMsg = 'Adding Appointment'
     let data = new FormData()
 
+    var date1=this.minDate;
 
-    data.append("docID",this.model.docID)
-    data.append("patID",this.model.patID)
-    data.append("department",this.model.department)
-    data.append("date",this.model.date)
-    data.append("time",this.model.time)
+    var date2=this.model.date;
+    
+    console.log("diff ye h"+date1);
 
-    this.blockchainServices.addAppointment(data).then((r:any)=>{
-      console.log(r);
-      if(r.status ="succcess"){
-        this.progressMsg = 'Appointment Added successfull'
-        this.progressSuccess = true
-        this.model = {}
-      }
-    })
+    console.log("diff ye h"+date2);
+    
+    this.diff =  Math.floor(( Date.parse(date2) - Date.parse(date1) ) / 86400000);
+    console.log("diff ye h"+this.diff);
+ 
+    if(this.diff<30)
+    {
+      data.append("docID",this.model.docID)
+      data.append("patID",this.model.patID)
+      data.append("department",this.model.department)
+      data.append("date",this.model.date)
+      data.append("time",this.model.time)
+
+      this.blockchainServices.addAppointment(data).then((r:any)=>{
+        console.log(r);
+        if(r.status ="succcess"){
+          this.progressMsg = 'Appointment Added successfull'
+          this.progressSuccess = true
+          this.model = {}
+        }
+      })
+      
+    }
+    else{
+      this.progressMsg = 'Add Appointment withing 30 days from today only'
+    }
   }
-
   close(){
-    this.showProgress = false
+    if(this.diff<30)
+      this.showProgress = false
+    else
+      this.warn = true;
   }
+
+  
 }

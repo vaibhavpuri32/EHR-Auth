@@ -1,58 +1,62 @@
-  <div class="row" text-align: center>
+<div style="text-align: center; background-color: #00ffff; height: 1000px">
+	<div>
 		<div>
-			<div class="alert alert-danger" *ngIf="error">
-				<p>{{ error }}</p>
-			</div>
-			<div *ngIf="isLoading" style="text-align: center">
-				<p>Loading</p>
-			</div>
-			<form
-				#authForm="ngForm"
-				(ngSubmit)="onSubmit(authForm)"
-				*ngIf="!isLoading" 
-        style="text-align: center"
-			>
-				<div class="form-group"  >
-					<label for="email">E-Mail</label>
-					<input
-						type="email"
-						id="email"
-						class="form-control"
-						ngModel
-						name="email"
-						required
-						email
-					/>
-				</div>
-				<div class="form-group">
-					<label for="password">Password</label>
-					<input
-						type="password"
-						id="password"
-						class="form-control"
-						ngModel
-						name="password"
-						required
-						minlength="6"
-					/>
-				</div>
-				<div>
-					<button
-						class="btn btn-primary"
-						type="submit"
-						[disabled]="!authForm.valid"
-					>
-						{{ isLoginMode ? "Login" : "Sign Up" }}
-					</button>
-					|
-					<button
-						class="btn btn-primary"
-						(click)="onSwitchMode()"
-						type="button"
-					>
-						Switch to {{ isLoginMode ? "Sign Up" : "Login" }}
-					</button>
-				</div>
-			</form>
+			<h1 style="padding-top: 200px; font-size:60px;">EHR SYSTEM</h1>
 		</div>
+		<div class="alert alert-danger" *ngIf="error">
+			<p>{{ error }}</p>
+		</div>
+		<div *ngIf="isLoading" style="text-align: center">
+			<p>Loading</p>
+		</div>
+		<form
+			#authForm="ngForm"
+			(ngSubmit)="onSubmit(authForm)"
+			*ngIf="!isLoading"
+			style="text-align: center"
+		>
+			<div
+				class="form-group"
+				style="padding-left: 550px; padding-right: 550px; padding-top: 20px;"
+			>
+				<label for="email" style="font-size: 25px">E-mail : </label>
+				<input style="border-color: black; border-width: 2px;"
+					type="email"
+					id="email"
+					class="form-control"
+					ngModel
+					name="email"
+					required
+					email
+				/>
+				<br />
+			</div>
+			<div class="form-group" style="padding-left: 550px; padding-right: 550px">
+				<label for="password" style="font-size: 25px">Password : </label>
+				<input style="border-color: black; border-width: 2px;"
+					type="password"
+					id="password"
+					class="form-control"
+					ngModel
+					name="password"
+					required
+					minlength="6"
+				/>
+			</div>
+			<br />
+			<div>
+				<button style="border-color: black; border-width: 2px;"
+					class="btn btn-primary"
+					type="submit"
+					[disabled]="!authForm.valid"
+				>
+					{{ isLoginMode ? "Login" : "Sign Up" }}
+				</button>
+				|
+				<button style="border-color: black; border-width: 2px;" class="btn btn-primary" (click)="onSwitchMode()" type="button">
+					Switch to {{ isLoginMode ? "Sign Up" : "Login" }}
+				</button>
+			</div>
+		</form>
 	</div>
+</div>

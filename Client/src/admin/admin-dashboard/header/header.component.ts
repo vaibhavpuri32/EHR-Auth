@@ -4,11 +4,11 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   selector: 'app-header',
   template: `
     <header class="navbar sticky-top mt-4 flex-md-nowrap p-0 shadow">
-      <a
+      <!-- <a
         class="navbar-brand col-md-2 col-lg-2 px-3 text-white fs-bold"
         href="#"
         >EHR Hospital</a
-      >
+      > -->
       <button
         class="navbar-toggler d-md-none"
         type="button"

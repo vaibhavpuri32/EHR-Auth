@@ -47,8 +47,7 @@ export class AppComponent implements OnInit {
   }
 
   load() { 
-    //this.router.navigate(['/auth']);
-    console.log('loading....');
+    this.router.navigate(['/auth']);
     this.blockChainService.getWeb3Provider().then((result: Web3) => {
       console.log(result);
       this.accounts = result.eth.getAccounts((err, accs) => {

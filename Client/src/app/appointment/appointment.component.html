@@ -45,7 +45,7 @@
               Date
             </label>
             <div class="col-sm-8 col-lg-8">
-              <input [(ngModel)]="model.date" name="date" type="date" id="date" class="form-control" [min]="today | date:'YYYY-MM-DD'" [max]="futureDate | date:'YYYY-MM-DD'">
+              <input [(ngModel)]="model.date" name="date" type="date" id="date" class="form-control" [min]="minDate">
             </div>
           </div>
           <!---->
@@ -55,6 +55,7 @@
             </label>
             <div class="col-sm-8 col-lg-8">
               <input [(ngModel)]="model.time" name="time" type="time" id="time" class="form-control">
+
             </div>
           </div>
           <!---->

@@ -93,8 +93,7 @@ export class ConsultationComponent implements OnInit {
   }
   getAppointments() {
     this.doctorService.getDocAppointments().then((data) => {
-      console.log(data);
-
+      console.log("Doctors appointment are ", data);
       let DATA = JSON.stringify(data.data);
       this.Appointments = JSON.parse(DATA);
       this.doctorService.setAppointments(this.Appointments)

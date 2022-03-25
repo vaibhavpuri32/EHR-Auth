@@ -35,7 +35,7 @@
                 style="font-size: 8px;"></sup></label>
             <div class="cal-icon">
               <input [(ngModel)]="model.Doj" name="Doj" id="dob" type="date" class="form-control"
-                placeholder="date of Joining" required />
+                placeholder="date of Joining" [min]="minDate" required />
             </div>
           </div>
         </div>

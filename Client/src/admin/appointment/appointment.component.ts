@@ -13,7 +13,7 @@ export class AppointmentComponent implements OnInit {
   Appointments:any = []
 
   ngOnInit(): void {
-    this.http.get('http://localhost:8000/api/appointment').subscribe((data:any)=>{
+    this.http.get('http://localhost:8000/api/appointment/').subscribe((data:any)=>{
       let DATA = JSON.stringify(data.data)
       this.Appointments = JSON.parse(DATA)
     })
